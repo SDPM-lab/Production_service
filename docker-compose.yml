@@ -15,11 +15,7 @@ services:
         volumes:
             - './app:/app'
         command: >
-            bash -c "php spark migrate
-            && php spark db:seed Production
-            && php spark db:seed Inventory
-            && php spark db:seed History
-            && ./rr serve"
+            bash -c "./rr serve"
     production_DB:
         image: postgres:11.12
         environment:
