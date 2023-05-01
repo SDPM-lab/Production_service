@@ -37,7 +37,11 @@ class InventoryController extends BaseController
         if($verfiyTypeResult) return $this->fail("訂單編號與類別重複，可能為重複輸入",400);
 
         $verfiyCreatedResult = HistoryBusinessLogic::verfiyCreated($o_key);
-        if(is_null($verfiyCreatedResult)) return $this->fail("訂單未被成立或已補償退貨");
+        if(is_null($verfiyCreatedResult)) {
+            return $this->respond([
+                "msg" => "OK"
+            ]);
+        }
 
         $inventoryModel = new InventoryModel();
         $inventoryEntity = $inventoryModel->find($p_key);
