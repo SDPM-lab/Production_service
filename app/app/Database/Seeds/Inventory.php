@@ -22,9 +22,17 @@ class Inventory extends Seeder
         $db      = \Config\Database::connect();
         $builder = $db->table("inventory");
 
+        if ($insertId == 1 || $insertId == 2) {
+            $amount = 100000000;
+        } else if ($insertId == 3 || $insertId == 4) {
+            $amount = 0;
+        } else {
+            $amount = random_int(0, 200);
+        }
+
         $builder->insert([
             "p_key" => $insertId,
-            "amount" => random_int(0,200),
+            "amount" => $amount,
             "created_at" => date("Y-m-d H:i:s"),
             "updated_at" => date("Y-m-d H:i:s")
         ]);

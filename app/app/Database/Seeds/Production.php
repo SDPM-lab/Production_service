@@ -26,8 +26,8 @@ class Production extends Seeder
 
         for ($i=0; $i < 100; $i++) {
             $builder->insert([
-                "name" => $faker->productName,
-                "description" => $faker->text,
+                "name" => $faker->productName(),
+                "description" => $faker->text(),
                 "price" => random_int(1,10000),
                 "created_at" => date("Y-m-d H:i:s"),
                 "updated_at" => date("Y-m-d H:i:s")
