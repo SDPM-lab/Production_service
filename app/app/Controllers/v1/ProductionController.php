@@ -28,7 +28,7 @@ class ProductionController extends BaseController
         $productionEntity = new ProductionEntity();
         $productionModel  = new ProductionModel();
 
-        $query = $productionModel->orderBy("created_at",$isDesc ? "DESC" : "ASC");
+        $query = $productionModel->orderBy("p_key",$isDesc ? "DESC" : "ASC");
         if($search !== "") $query->like("name",$search);
         $amount = $query->countAllResults(false);
         $production = $query->findAll($limit,$offset);
@@ -41,6 +41,7 @@ class ProductionController extends BaseController
         if($production){
             foreach ($production as $productionEntity) {
                 $productionData = [
+                    "id"          => $productionEntity->p_key,
                     "name"        => $productionEntity->name,
                     "description" => $productionEntity->description,
                     "price"       => $productionEntity->price,

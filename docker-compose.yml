@@ -14,13 +14,8 @@ services:
             - PHP_UPLOAD_MAX_FILESIZE=2048M
         volumes:
             - './app:/app'
-        #deploy:
-            #resources:
-                #limits:
-                    #cpus: '0.25'
-                    #memory: 1024M
         command: >
-            bash -c "./rr serve"
+            bash -c "chmod 776 ./start_service.sh && ./start_service.sh"
     production_DB:
         image: postgres:11.12
         environment:

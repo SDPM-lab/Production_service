@@ -126,11 +126,13 @@ app/.phpunit.*.cache
 
 # Server App
 app/rr
+app/.rr.yaml
+app/app/Config/Burner.php
 
 #-------------------------
 # Development Database
 #-------------------------
 
 /db/*
-/user-db-data/*
-/user-test-db-data/*
+/production-db-data/*
+/production-test-db-data/*
