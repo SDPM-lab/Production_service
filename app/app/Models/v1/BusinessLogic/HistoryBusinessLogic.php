@@ -58,7 +58,7 @@ class HistoryBusinessLogic
     }
 
     /**
-     * 刪除庫存
+     * 刪除庫存記錄
      *
      * @param integer $h_key
      * @return void
@@ -71,7 +71,7 @@ class HistoryBusinessLogic
     }
 
     /**
-     * 驗證商品退貨或補償是否之前有新增
+     * 驗證商品是否有新增退貨或補償
      *
      * @param string $o_key
      * @return HistoryEntity | null
@@ -79,7 +79,6 @@ class HistoryBusinessLogic
     static function verfiyCreated(string $o_key): ?HistoryEntity
     {
         $historyModel = new HistoryModel();
-
         $historyEntity = $historyModel->where('o_key', $o_key)
                                       ->whereNotIn('type', ["reduce", "compensate"])
                                       ->where('type', "create")

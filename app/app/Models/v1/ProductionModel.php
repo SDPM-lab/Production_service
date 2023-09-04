@@ -48,9 +48,9 @@ class ProductionModel extends Model
      * @param string $description
      * @param integer $price
      * @param integer $amount
-     * @return bool
+     * @return int|null 新增的商品 id, 失敗回傳 null
      */
-    public function createProductionTranscation(string $name, string $description, int $price, int $amount):bool
+    public function createProductionTranscation(string $name, string $description, int $price, int $amount):?int
     {
         $productionData = [
             "name" => $name,
@@ -80,7 +80,11 @@ class ProductionModel extends Model
 
             $result = $this->db->transComplete();
             
-            return $result;
+            if ($result === false) {
+                return null;
+            }
+            
+            return $productionInsertId;
         }catch(\Exception $e){
             log_message('error', '[ERROR] {exception}', ['exception' => $e]);
             return false;
