@@ -44,7 +44,7 @@ $routes->group(
         $routes->get('products', 'ProductionController::index');
         $routes->get('products/(:num)', 'ProductionController::show/$1');
         $routes->post('products', 'ProductionController::create');
-        $routes->put('products', 'ProductionController::update');
+        $routes->put('products/(:num)', 'ProductionController::update/$1');
         $routes->delete('products/(:num)', 'ProductionController::delete/$1');
 
         //Inventory

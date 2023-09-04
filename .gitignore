@@ -41,7 +41,6 @@ $RECYCLE.BIN/
 #-------------------------
 # These should never be under version control,
 # as it poses a security risk.
-.env
 .vagrant
 Vagrantfile
 
@@ -121,9 +120,14 @@ nb-configuration.xml
 # Visual Studio Code
 .vscode/
 
-/app/results/
-/app/phpunit*.xml
-/app/.phpunit.*.cache
+app/results/
+app/phpunit*.xml
+app/.phpunit.*.cache
+
+# Server App
+app/rr
+app/.rr.yaml
+app/app/Config/Burner.php
 
 #-------------------------
 # Development Database

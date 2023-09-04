@@ -14,13 +14,8 @@ services:
             - PHP_UPLOAD_MAX_FILESIZE=2048M
         volumes:
             - './app:/app'
-        #deploy:
-            #resources:
-                #limits:
-                    #cpus: '0.25'
-                    #memory: 1024M
         command: >
-            bash -c "./rr serve"
+            bash -c "chmod 776 ./start_service.sh && ./start_service.sh"
     production_DB:
         image: postgres:11.12
         environment:
@@ -28,7 +23,7 @@ services:
             POSTGRES_USER: root
             POSTGRES_PASSWORD: root
         volumes:
-            - production-db-data:/var/lib/postgresql/data/
+            - ./production-db-data:/var/lib/postgresql/data/
         ports:
             - "8310:5432"
         command: ["postgres", "-c", "logging_collector=on", "-c", "log_destination=stderr", "-c", "max_connections=50000"]
@@ -39,10 +34,7 @@ services:
             POSTGRES_USER: root
             POSTGRES_PASSWORD: root
         volumes:
-            - production-test-db-data:/var/lib/postgresql/data/
+            - ./production-test-db-data:/var/lib/postgresql/data/
         ports:
             - "8311:5432"
         command: ["postgres", "-c", "logging_collector=on", "-c", "log_destination=stderr", "-c", "max_connections=50000"]
-volumes:
-    production-db-data:
-    production-test-db-data:

@@ -1,1 +1,0 @@
-docker-compose down -v && docker-compose up -d && sleep 2 && docker-compose exec production-service php spark migrate && docker-compose exec production-service php spark db:seed Production && docker-compose up 
