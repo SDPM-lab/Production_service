@@ -6,7 +6,6 @@ fi
 
 if [ ! -f "./vendor/bin/rr_server" ]; then
     php spark burner:init RoadRunner
-    php spark burner:start
 fi
 
-./rr serve
+php spark burner:start

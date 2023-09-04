@@ -2,6 +2,7 @@
 
 namespace App\Controllers\v1;
 
+use App\Models\v1\InventoryModel;
 use CodeIgniter\API\ResponseTrait;
 
 use App\Controllers\v1\BaseController;
@@ -16,7 +17,6 @@ class ProductionController extends BaseController
      * [GET] /api/v1/products
      * 取得所有的產品清單
      *
-     * @return void
      */
     public function index()
     {
@@ -43,7 +43,6 @@ class ProductionController extends BaseController
                 $productionData = [
                     "id"          => $productionEntity->p_key,
                     "name"        => $productionEntity->name,
-                    "description" => $productionEntity->description,
                     "price"       => $productionEntity->price,
                     "createdAt"   => $productionEntity->createdAt,
                     "updatedAt"   => $productionEntity->updatedAt
@@ -65,7 +64,6 @@ class ProductionController extends BaseController
      * [GET] /api/v1/products/{productionKey}
      * 取得單一商品
      *
-     * @return void
      */
     public function show($productKey = null)
     {
@@ -75,6 +73,8 @@ class ProductionController extends BaseController
         $productionModel  = new ProductionModel();
 
         $productionEntity = $productionModel->find($productKey);
+        $inventoryModel = new InventoryModel();
+        $inventoryEntity = $inventoryModel->find($productionEntity->p_key);
 
         if($productionEntity){
             $data = [
@@ -82,6 +82,7 @@ class ProductionController extends BaseController
                 "name"        => $productionEntity->name,
                 "description" => $productionEntity->description,
                 "price"       => $productionEntity->price,
+                "amount"      => $inventoryEntity->amount,
                 "createdAt"   => $productionEntity->createdAt,
                 "updatedAt"   => $productionEntity->updatedAt
             ];
@@ -99,7 +100,6 @@ class ProductionController extends BaseController
      * [POST] /api/v1/products form-data 方式傳入
      * 建立產品
      *
-     * @return void
      */
     public function create()
     {
@@ -117,7 +117,7 @@ class ProductionController extends BaseController
         if($productInsertResult){
             return $this->respond([
                         "msg" => "OK",
-                        "res" => $productInsertResult
+                        "product_id" => $productInsertResult
                     ]);
         }else{
             return $this->fail("新增商品或新增庫存失敗",400);
@@ -125,16 +125,14 @@ class ProductionController extends BaseController
     }
 
     /**
-     * [PUT] /api/v1/products Json 格式傳入
+     * [PUT] /api/v1/products/{p_key} Json 格式傳入
      * 更新產品資訊
      * 
-     * @return void
      */
-    public function update()
+    public function update($p_key = null)
     {
         $data = $this->request->getJSON(true);
 
-        $p_key        = $data["p_key"]        ?? null;
         $name         = $data["name"]         ?? null;
         $description  = $data["description"]  ?? null;
         $price        = $data["price"]        ?? null;
@@ -166,7 +164,6 @@ class ProductionController extends BaseController
      * 刪除產品
      *
      * @param int $productKey
-     * @return void
      */
     public function delete($productKey = null)
     {
