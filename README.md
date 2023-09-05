@@ -18,4 +18,4 @@ Demo service in microservice architecture
 `docker-compose exec production-service php spark db:seed Production`
 
 ## 可用 API
-請參考根目錄下的 `user_service.postman_collection.json` 檔案，將可使用的 API 匯入 Postman 中。
+請參考根目錄下的 `Production Service.postman_collection.json` 檔案，將可使用的 API 匯入 Postman 中。
