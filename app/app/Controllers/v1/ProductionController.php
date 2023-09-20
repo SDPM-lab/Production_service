@@ -151,6 +151,12 @@ class ProductionController extends BaseController
         if(!is_null($description)) $productionEntity->description = $description;
         if(!is_null($price))       $productionEntity->price = $price;
 
+        if($productionEntity->hasChanged() == false){
+            return $this->fail([
+                "error" => "沒有任何資料被更改。"
+            ], 400);
+        }
+        
         $productionModel->where('p_key',$productionEntity->p_key)
                         ->save($productionEntity);
         return $this->respond([
