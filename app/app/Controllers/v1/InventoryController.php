@@ -31,7 +31,11 @@ class InventoryController extends BaseController
         if(is_null($productionResult)) return $this->fail("查無此商品 key",404);
 
         $verfiyTypeResult = HistoryBusinessLogic::verfiyType($p_key,$o_key,$type);
-        if($verfiyTypeResult) return $this->fail("訂單編號與類別重複，可能為重複輸入",400);
+        if($verfiyTypeResult){
+            return $this->respond([
+                "msg" => "OK"
+            ]);
+        }
         
         $inventoryModel = new InventoryModel();
         
@@ -71,10 +75,20 @@ class InventoryController extends BaseController
         if(is_null($productionResult)) return $this->fail("查無此商品 key", 404);
 
         $verfiyTypeResult = HistoryBusinessLogic::verfiyType($p_key,$o_key,$type);
-        if($verfiyTypeResult) return $this->fail("訂單編號與類別重複，可能為重複輸入",400);
+        if($verfiyTypeResult){
+            return $this->respond([
+                "msg" => "OK"
+            ]);    
+        }
 
-        $verfiyCreatedResult = HistoryBusinessLogic::verfiyCreated($o_key);
-        if(is_null($verfiyCreatedResult)) return $this->fail("訂單未被成立或已補償退貨");
+        if($type == "compensate"){
+            $verfiyCompensateResult = HistoryBusinessLogic::verfiyType($p_key,$o_key, 'create');
+            if(is_null($verfiyCompensateResult)){
+                return $this->respond([
+                    "msg" => "這個訂單的庫存扣款未被成立"
+                ]);
+            }
+        }
 
         $inventoryModel = new InventoryModel();
         $inventoryEntity = $inventoryModel->find($p_key);
