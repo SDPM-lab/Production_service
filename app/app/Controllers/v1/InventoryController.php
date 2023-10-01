@@ -30,8 +30,9 @@ class InventoryController extends BaseController
         $productionResult = InventoryBusinessLogic::verfiyProductKey($p_key);
         if(is_null($productionResult)) return $this->fail("查無此商品 key",404);
 
-        $verfiyTypeResult = HistoryBusinessLogic::verfiyType($p_key,$o_key,$type);
-        if($verfiyTypeResult){
+        $verifyTypeResult = HistoryBusinessLogic::verfiyType($p_key,$o_key,$type);
+        $verifyCompensateResult = HistoryBusinessLogic::verfiyType($p_key,$o_key,'compensate');
+        if($verifyTypeResult && !$verifyCompensateResult){
             return $this->respond([
                 "msg" => "OK"
             ]);
