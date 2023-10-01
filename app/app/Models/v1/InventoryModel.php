@@ -104,9 +104,34 @@ class InventoryModel extends Model
             "created_at" => date("Y-m-d H:i:s"),
             "updated_at" => date("Y-m-d H:i:s")
         ];
-        
+
+        $hasCreate = $this->db->table("history")
+                              ->where("p_key", $p_key)
+                              ->where("o_key", $o_key)
+                              ->where("type", "create")
+                              ->get()
+                              ->getFirstRow();
+        $hasCompensate = $this->db->table("history")
+                                  ->where("p_key", $p_key)
+                                  ->where("o_key", $o_key)
+                                  ->where("type", "compensate")
+                                  ->get()
+                                  ->getFirstRow();
         try {
             $this->db->transBegin();
+
+            if($hasCreate && $hasCompensate){
+                $this->db->table("history")
+                          ->where("p_key", $p_key)
+                          ->where("o_key", $o_key)
+                          ->where("type", "create")
+                          ->update(["deleted_at" => date("Y-m-d H:i:s")]);
+                $this->db->table("history")
+                         ->where("p_key", $p_key)
+                         ->where("o_key", $o_key)
+                         ->where("type", "compensate")
+                         ->update(["deleted_at" => date("Y-m-d H:i:s")]);
+            }
 
             $this->db->table("history")
                      ->insert($histotyData);
